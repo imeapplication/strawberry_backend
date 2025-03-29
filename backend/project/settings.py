@@ -13,7 +13,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-secret-key')
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+#ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Allow all hosts during development
+ALLOWED_HOSTS = ['*', 'avignon', '192.168.0.222']
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -26,6 +29,8 @@ INSTALLED_APPS = [
     'strawberry_django',
     'core',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
