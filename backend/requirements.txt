@@ -1,0 +1,11 @@
+﻿Django==4.2.3
+psycopg2-binary==2.9.6
+strawberry-graphql-django==0.25.0
+strawberry-graphql[debug-server]
+Pillow==9.5.0
+python-dotenv==1.0.0
+gunicorn==20.1.0
+typer==0.9.0
+strawberry-graphql==0.223.0
+rich==13.5.2
+libcst

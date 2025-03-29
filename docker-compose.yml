@@ -1,0 +1,61 @@
+﻿version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: project-postgres
+    environment:
+      POSTGRES_DB: projectdb
+      POSTGRES_USER: projectuser
+      POSTGRES_PASSWORD: projectpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U projectuser -d projectdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: project-backend
+    environment:
+      - DATABASE_URL=postgres://projectuser:projectpassword@postgres:5432/projectdb
+      - DB_HOST=postgres
+      - DB_NAME=projectdb
+      - DB_USER=projectuser
+      - DB_PASSWORD=projectpassword
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+
+  strawberry-debug:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: project-strawberry-debug
+    environment:
+      - DATABASE_URL=postgres://projectuser:projectpassword@postgres:5432/projectdb
+      - DB_HOST=postgres
+      - DB_NAME=projectdb
+      - DB_USER=projectuser
+      - DB_PASSWORD=projectpassword
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "python manage.py migrate && python strawberry_server.py core.schema --port 8080"
+    volumes:
+      - ./backend:/app
+
+volumes:
+  postgres_data:
