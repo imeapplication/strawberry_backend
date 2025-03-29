@@ -24,6 +24,7 @@ services:
       dockerfile: Dockerfile
     container_name: project-backend
     environment:
+      - DJANGO_SETTINGS_MODULE=project.settings
       - DATABASE_URL=postgres://projectuser:projectpassword@postgres:5432/projectdb
       - DB_HOST=postgres
       - DB_NAME=projectdb
@@ -43,6 +44,7 @@ services:
       dockerfile: Dockerfile
     container_name: project-strawberry-debug
     environment:
+      - DJANGO_SETTINGS_MODULE=project.settings
       - DATABASE_URL=postgres://projectuser:projectpassword@postgres:5432/projectdb
       - DB_HOST=postgres
       - DB_NAME=projectdb
